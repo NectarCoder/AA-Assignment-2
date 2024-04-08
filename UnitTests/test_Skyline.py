@@ -188,5 +188,30 @@ class TestSkyline(unittest.TestCase):
         string_results = ",".join(str(result) for result in results)
         self.assertEqual(string_results, "(13,1),(11,5),(0,9),(7,12),(3,16),(18,19),(3,22),(13,23),(0,29)")
 
+    def test_scenario12(self):
+        buildings = [
+            Building(13, 1, 5),
+            Building(6, 2, 7),
+            Building(11, 3, 9),
+            Building(5, 15, 20),
+        ]
+        skyline = Skyline()
+        results = skyline.recursive_function2(buildings)
+        string_results = ",".join(str(result) for result in results)
+        self.assertEqual(string_results, "(13,1),(11,5),(0,9),(5,15),(0,20)")
+
+    def test_scenario13(self):
+        buildings = [
+            Building(10, 2, 9),
+            Building(15,3,7),
+            Building(12,5,12),
+            Building(10,15,20),
+            Building(8,19,24),
+        ]
+        skyline = Skyline()
+        results = skyline.recursive_function2(buildings)
+        string_results = ",".join(str(result) for result in results)
+        self.assertEqual(string_results, "(10,2),(15,3),(12,7),(0,12),(10,15),(8,20),(0,24)")
+
 if __name__ == '__main__':
     unittest.main()
