@@ -29,41 +29,97 @@ class Skyline:
 
     @staticmethod
     def merge(left, right):
-        if len(left) > 0 and len(right) == 0:
-            return left
-        elif len(left) == 0 and len(right) > 0:
-            return right
 
         return_list = []
         i = 0
         j = 0
-        left_height = 0
-        right_height = 0
-        temp = None
+        previous_left_height = 0
+        previous_right_height = 0
+        skipAppend = False
 
         while i < len(left) and j < len(right):
-            if left[i].x_coordinate < right[j].x_coordinate or left[i].height > right[j].height:
-                left_height = left_height if left[i].height == 0 else left[i].height
-                if temp is not None:
-                    return_list.append(BuildingTuple(temp.height, temp.x_coordinate))
-                    temp = None
-                elif left_height > right_height:
-                    return_list.append(BuildingTuple(left[i].height, left[i].x_coordinate))
+
+            # When i is less than j, than we are processing based on left buildings position
+            # When j is less than i, than we are processing based on right buildings position
+            if left[i].x_coordinate < right[j].x_coordinate:
+                # By saving the left hight here, we are storing the last iterations left hight. This comes in handy
+                # when right[j].x_coordinate < left[i].x_coordinate and we are in the else statement. 
+                # When that happens, we will have PREVIOUS iterations left height. We do the same in the else statement
+                # by saving right height.
+                previous_left_height = left[i].height
+
+                # max_height is the current height compared to the PREVIOUS iterations hight or 0 if the PREVIOUS iteration
+                # did not set it. For example, the first iteration, right_height would still be equal to 0.
+                # Also, remember that the the hight of the right most position of the building will be 0, so in that case
+                # we are: => max(left[i].height = 0, previous_right_height)
+                max_height = max(left[i].height, previous_right_height)
+
+                if len(return_list) > 0:
+                    if return_list[len(return_list)-1].height == max_height:
+                        # We do not want to save this point. 
+                        # Examples of when this is true. See arrow. This is why saving the previous_right_height was important!!! 
+                        """
+                                    __________
+                                    |         |
+                                ___ |______   |
+                                |   |     |   |
+                                |   |     |   |
+                                |   |  -->|   |
+                        """
+                        """
+                                _________ _________
+                                |         |         |
+                                |         |         |
+                                |         |<--      |
+                        """
+                        skipAppend = True
+                        pass
+                
+                if skipAppend == False:  
+                    #                
+                    return_list.append(BuildingTuple(max_height, left[i].x_coordinate))
                 else:
-                    return_list.append(BuildingTuple(right[j].height, right[j].x_coordinate))
-                    j += 1
+                    skipAppend = False #reset
+
+                # Always move the pointer forward once we have processed the current position.
                 i += 1
-            elif left[i].x_coordinate > right[j].x_coordinate:
-                right_height = right_height if right[j].height == 0 else right[j].height
-                temp = None
-                if left_height > right_height:
-                    temp = BuildingTuple(right_height, left[-1].x_coordinate)
-                elif left_height < right_height and right[j].height > 0:
-                    return_list.append(BuildingTuple(right_height, right[j].x_coordinate))
+            # All comments made for the if statement above are identical for the else statement. 
+            else:
+                previous_right_height = right[j].height
+                max_height = max(previous_left_height, right[j].height)
+                if len(return_list) > 0:
+                    if return_list[len(return_list)-1].height == max_height:
+                        # We do not want to save this point. 
+                        # Examples of when this is true. See arrow. This is why saving the previous_left_hight was important!!! 
+                        """
+                                _________
+                                |    _____|________
+                                |   |     |        |
+                                |   |<--  |        |
+                        """ 
+                        """
+                                _______________
+                                |   _____      |    
+                                |  |     |     |
+                                |  |<--  |<--  |
+                        """
+                        """
+                                _________ _________
+                                |         |         |
+                                |         |         |
+                                |         |<--      |
+                        """
+                        skipAppend = True
+                        pass
+                
+                if skipAppend == False:                    
+                    return_list.append(BuildingTuple(max_height, right[j].x_coordinate))
                 else:
-                    return_list.append(BuildingTuple(left_height, right[j].x_coordinate))
+                    skipAppend = False #reset
+
                 j += 1
 
+        # Save any unprocessed buildings. 
         if i < len(left):
             return_list.extend(left[i:])
         if j < len(right):
@@ -71,6 +127,7 @@ class Skyline:
 
         return return_list
 
+        
 
 if __name__ == "__main__":
     buildings = [

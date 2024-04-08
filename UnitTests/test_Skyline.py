@@ -1,6 +1,6 @@
 import sys
 import unittest
-sys.path.append("C:\\Users\\mhaye\\code\\School\\SkylineHomeworkPython")
+sys.path.append("C:\\Users\\mhaye\\code\\School\\6045 Algorithms\\SkylineProblem\\AA-Assignment-2")
 from Skyline import Building, Skyline
 
 class TestSkyline(unittest.TestCase):
@@ -76,7 +76,7 @@ class TestSkyline(unittest.TestCase):
             |         |  |         |
             |         |  |         |
     """
-    def test_scenario5(self):
+    def test_scenario5a(self):
         buildings = [
             Building(6, 1, 6),
             Building(6, 7, 12)
@@ -85,6 +85,23 @@ class TestSkyline(unittest.TestCase):
         results = skyline.recursive_function2(buildings)
         string_results = ",".join(str(result) for result in results)
         self.assertEqual(string_results, "(6,1),(0,6),(6,7),(0,12)")
+
+    
+    """
+             _________ _________
+            |         |         |
+            |         |         |
+            |         |         |
+    """
+    def test_scenario5b(self):
+        buildings = [
+            Building(6, 1, 6),
+            Building(6, 6, 12)
+        ]
+        skyline = Skyline()
+        results = skyline.recursive_function2(buildings)
+        string_results = ",".join(str(result) for result in results)
+        self.assertEqual(string_results, "(6,1),(0,12)")
 
     """
              _________ 
@@ -154,6 +171,22 @@ class TestSkyline(unittest.TestCase):
         results = skyline.recursive_function2(buildings)
         string_results = ",".join(str(result) for result in results)
         self.assertEqual(string_results, "(7,12),(3,16),(18,19),(3,22),(13,23),(0,29)")
+
+    def test_scenario11(self):
+        buildings = [
+            Building(13, 1, 5),
+            Building(6, 2, 7),
+            Building(11, 3, 9),
+            Building(7, 12, 16),
+            Building(3, 14, 25),
+            Building(18, 19, 22),
+            Building(13, 23, 29),
+            Building(4, 24, 28)
+        ]
+        skyline = Skyline()
+        results = skyline.recursive_function2(buildings)
+        string_results = ",".join(str(result) for result in results)
+        self.assertEqual(string_results, "(13,1),(11,5),(0,9),(7,12),(3,16),(18,19),(3,22),(13,23),(0,29)")
 
 if __name__ == '__main__':
     unittest.main()
