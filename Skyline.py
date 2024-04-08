@@ -1,3 +1,6 @@
+import sys
+import os
+
 class Building:
     def __init__(self, height, left_coordinate, right_coordinate):
         self.height = height
@@ -128,13 +131,33 @@ class Skyline:
         return return_list
 
         
+def getInputBuildingFiles() -> list:  # pathing in VScode is odd, so this is added to fix it. Shouldn't cause any issues with other IDE's
+    path = ''
+    if getattr(sys, 'frozen', False):
+        path = os.path.dirname(os.path.realpath(sys.executable))
+    elif __file__:
+        path = os.path.dirname(__file__)
+
+    dirPath = os.path.join(path, 'InputBuildings')
+    return [os.path.join(dirPath, file) for file in os.listdir(dirPath) if os.path.isfile(os.path.join(dirPath, file))]
 
 if __name__ == "__main__":
-    buildings = [
-        Building(4, 4, 9),
-        Building(2, 7, 12)
-    ]
+    
+    for fullFilePath in getInputBuildingFiles():
+        buildings = []
+        with open(fullFilePath, "r") as rawdata:
+            data = rawdata.read()
+            if data == '':
+                break
+            compiled = data.split('\n')
+            rawdata.close()
+        for lines in compiled:
+            results = lines.split(",")
+            buildings.append(Building(int(results[0].replace(" ","")),int(results[1].replace(" ","")),int(results[2].replace(" ",""))))
 
-    skyline = Skyline()
-    results = skyline.recursive_function2(buildings)
-    print(results)
+        skyline = Skyline()
+        results = skyline.recursive_function2(buildings)
+        print(",".join(str(result) for result in results))
+
+
+    
