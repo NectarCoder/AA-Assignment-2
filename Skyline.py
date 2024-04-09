@@ -1,25 +1,26 @@
 import sys
 import os
 
+
 class Building:
-    def __init__(self, height, left_coordinate, right_coordinate):
+    def __init__(self, height:int, left_coordinate:int, right_coordinate:int):
         self.height = height
         self.left_coordinate = left_coordinate
         self.right_coordinate = right_coordinate
 
 
 class BuildingTuple:
-    def __init__(self, height, x_coordinate):
+    def __init__(self, height:int, x_coordinate:int):
         self.height = height
         self.x_coordinate = x_coordinate
 
-    def __str__(self):
+    def __str__(self)-> str:
         return f"({self.height},{self.x_coordinate})"
 
 
 class Skyline:
     @staticmethod
-    def recursive_function2( buildings:list):
+    def recursive_function2(buildings:list)->list:
         if len(buildings) == 1:
             return [BuildingTuple(buildings[0].height, buildings[0].left_coordinate),
                     BuildingTuple(0, buildings[0].right_coordinate)]
@@ -31,7 +32,7 @@ class Skyline:
         return Skyline.merge(left, right)
 
     @staticmethod
-    def merge(left, right):
+    def merge(left:int, right:int)->list:
 
         return_list = []
         i = 0
@@ -140,9 +141,9 @@ def getInputBuildingFiles() -> list:  # pathing in VScode is odd, so this is add
 
     dirPath = os.path.join(path, 'InputBuildings')
     return [os.path.join(dirPath, file) for file in os.listdir(dirPath) if os.path.isfile(os.path.join(dirPath, file))]
-
-if __name__ == "__main__":
     
+if __name__ == "__main__":
+    output=[]
     for fullFilePath in getInputBuildingFiles():
         buildings = []
         with open(fullFilePath, "r") as rawdata:
@@ -157,7 +158,17 @@ if __name__ == "__main__":
 
         skyline = Skyline()
         results = skyline.recursive_function2(buildings)
-        print(",".join(str(result) for result in results))
+        for result in results:
+            converted+=str(result)[1:-1]+'\n' 
+        output.append(converted)
+    paths=getInputBuildingFiles()
+    for filenumber in range(len(output)):   #used to create the output files
+        path=paths[filenumber].replace('InputBuildings','Output').replace('input','Output')  # file path is converted to the output file location
+        file=open(path,'w')
+        file.write(output[filenumber])
+        file.close()                                # file is written and then closed
+        print(f'Output File for Building {filenumber+1} created Successfully')   #terminal produces successful message of output file being created
+        
 
 
     
