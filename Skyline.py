@@ -1,36 +1,87 @@
-import sys
+/import sys
 import os
 
+# Assignment Two
+# Authors: Micheal Henry, Amrutvyasa Ramasamy, Cody Bijeaux
+# Date:04/09/2024
 
+#
+# Class Name: Building
+# Class Variables: 
+#    1) [int] self.height: The stored height
+#    2) [int] self.left_coordinate: the stored left coordinate
+#    3) [int] self.right_coordinate: the stored right coordinate
+# Usage: Stores the height and coordinates of buildings
+#
 class Building:
+    #
+    # Constructor
+    # Formal Parameters:
+    #   1) [int]  height: tracks the height of the building
+    #   2) [int]  left_coordinate: tracks the left coordinate of the building
+    #   3) [int]  right_coordinate: tracks the right coordinate of the building
+    #
     def __init__(self, height:int, left_coordinate:int, right_coordinate:int):
         self.height = height
         self.left_coordinate = left_coordinate
         self.right_coordinate = right_coordinate
-
-
+#
+# Class Name: BuildingTuple
+# Class Variables:
+#       1) [int] self._self.height: the height stored within the object
+#       2) [int] self._x_coordinate: the stored X coordinate
+# Usage: stores the height and x-coordinate, to which is called by the toString
+#
 class BuildingTuple:
+    #
+    # Constructor
+    # Formal Parameters:
+    #   1) [int]  height: passes the height of the desired building
+    #   2) [int]  x_coordinate: passes the x-coordinate of the desired building
+    #
     def __init__(self, height:int, x_coordinate:int):
         self.height = height
         self.x_coordinate = x_coordinate
-
+    #
+    # Function Name: __str__
+    # Formal Parameters: None
+    # Return Value:str
+    # Usage: prints out the height and x-coordinate of the building as a string
+    #
     def __str__(self)-> str:
         return f"({self.height},{self.x_coordinate})"
 
-
+#
+# Class Name: Skyline
+# Class Variables: None
+# Usage: stores static methods that are used to generate the skyline from a group of buildings
+#
 class Skyline:
+    #
+    # Function Name: recursive_function2  <STATIC>
+    # Formal Parameters:
+    #   1) [list] buildings: the lsit of buildings that will be split and used to recall the function until the length of the list has only one building remain.
+    # Return Value:list
+    # Usage: splits the list of buildings until they are at their indivilual units, then recursively calls the merge function to track points to where the height of the skyline changes
+    #
     @staticmethod
     def recursive_function2(buildings:list)->list:
         if len(buildings) == 1:
             return [BuildingTuple(buildings[0].height, buildings[0].left_coordinate),
-                    BuildingTuple(0, buildings[0].right_coordinate)]
-
-        mid = len(buildings) // 2
-        left = Skyline.recursive_function2(buildings[:mid])
+                    BuildingTuple(0, buildings[0].right_coordinate)]        # if the list has only one element, then its information and another fake building sharing the same right coordinate but a       
+        mid = len(buildings) // 2                                           # 0 left coordinate are used. 
+        left = Skyline.recursive_function2(buildings[:mid])                # method recursively called on the left and right side until the base case is found.
         right = Skyline.recursive_function2(buildings[mid:])
 
-        return Skyline.merge(left, right)
-
+        return Skyline.merge(left, right)                                    # method recursively used with the left and the right variables of the stored buildings 
+    #
+    # Function Name: merge  <STATIC>
+    # Formal Parameters:
+    #   1) [int] left: the left coordinate passed into the function to compare with the right coordinate
+    #   2) [int]  right: the right coordinate passed into the function to compare with the left coordinate
+    # Return Value:list
+    # Usage: called to compare two buildings and find the change of elevation and collection points to form a skyline of the buildings 
+    #
     @staticmethod
     def merge(left:int, right:int)->list:
 
@@ -131,7 +182,12 @@ class Skyline:
 
         return return_list
 
-        
+#
+# Function Name: getInputBuildingFiles  <STATIC>
+# Formal Parameters: None
+# Return Value:list
+# Usage: gets the pathing for all the input files within the InputBuildings folder
+#
 def getInputBuildingFiles() -> list:  # pathing in VScode is odd, so this is added to fix it. Shouldn't cause any issues with other IDE's
     path = ''
     if getattr(sys, 'frozen', False):
