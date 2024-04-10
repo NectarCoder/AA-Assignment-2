@@ -201,6 +201,7 @@ def getInputBuildingFiles() -> list:  # pathing in VScode is odd, so this is add
 if __name__ == "__main__":
     output=[]
     for fullFilePath in getInputBuildingFiles():
+        converted=''
         buildings = []
         with open(fullFilePath, "r") as rawdata:
             data = rawdata.read()
