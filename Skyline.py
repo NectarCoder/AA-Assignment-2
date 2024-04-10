@@ -2,7 +2,7 @@
 import os
 
 # Assignment Two
-# Authors: Micheal Hayes, Amrutvyasa Ramasamy, Cody Bijeaux
+# Authors: Michael Hayes, Amrutvyasa Ramasamy, Cody Bijeaux
 # Date:04/09/2024
 
 #
