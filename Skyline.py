@@ -77,8 +77,8 @@ class Skyline:
     #
     # Function Name: merge  <STATIC>
     # Formal Parameters:
-    #   1) [int] left: the left coordinate passed into the function to compare with the right coordinate
-    #   2) [int]  right: the right coordinate passed into the function to compare with the left coordinate
+    #   1) [int] left: the left skyline passed into the function to compare with the right coordinate
+    #   2) [int]  right: the right skyline passed into the function to compare with the left coordinate
     # Return Value:list
     # Usage: called to compare two buildings and find the change of elevation and collection points to form a skyline of the buildings 
     #
