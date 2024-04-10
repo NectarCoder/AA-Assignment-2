@@ -249,14 +249,19 @@ def getInputBuildingFiles() -> list:  # pathing in VScode is odd, so this is add
     elif __file__:
         path = os.path.dirname(__file__)
 
-    dirPath = os.path.join(path, 'InputBuildings')
+    dirPath = os.path.join(path, 'InputsOutputs')
     return [os.path.join(dirPath, file) for file in os.listdir(dirPath) if os.path.isfile(os.path.join(dirPath, file))]
 
 
 if __name__ == "__main__":
-    output = []
-    for fullFilePath in getInputBuildingFiles():
-        converted = ''
+    output=[]
+    inputfiles=[]
+    files=getInputBuildingFiles()
+    for file in files:
+        if 'Input' in file[-11:]:
+            inputfiles.append(file)   #output files are ignored in the case where they are present in the folder
+    for fullFilePath in inputfiles:
+        converted=''
         buildings = []
         with open(fullFilePath, "r") as rawdata:
             data = rawdata.read()
@@ -266,20 +271,20 @@ if __name__ == "__main__":
             rawdata.close()
         for lines in compiled:
             results = lines.split(",")
-            buildings.append(Building(int(results[0].replace(" ", "")), int(results[1].replace(" ", "")),
-                                      int(results[2].replace(" ", ""))))
+            buildings.append(Building(int(results[0].replace(" ","")),int(results[1].replace(" ","")),int(results[2].replace(" ",""))))
 
         skyline = Skyline()
         results = skyline.recursive_function2(buildings)
         for result in results:
-            converted += str(result)[1:-1] + '\n'
+            converted+=str(result)[1:-1]+'\n' 
         output.append(converted)
-    paths = getInputBuildingFiles()
-    for filenumber in range(len(output)):  # used to create the output files
-        path = paths[filenumber].replace('InputBuildings', 'Output').replace('input',
-                                                                             'Output')  # file path is converted to the output file location
-        file = open(path, 'w')
+    for filenumber in range(len(output)):   #used to create the output files
+        path=files[filenumber].replace(f'Input{filenumber+1}',f'Output{filenumber+1}')  # file path is converted to the output file location
+        file=open(path,'w')
         file.write(output[filenumber])
-        file.close()  # file is written and then closed
-        print(
-            f'Output File for Skyline {filenumber + 1} created Successfully:\n{output[filenumber]}')  # terminal produces successful message of output file being created
+        file.close()                                # file is written and then closed
+        print(f'Output File for Skyline {filenumber+1} created Successfully:\n{output[filenumber]}')   #terminal produces successful message of output file being created
+        
+
+
+    
