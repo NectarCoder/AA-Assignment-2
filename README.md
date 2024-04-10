@@ -14,5 +14,5 @@ Ensure Python 3.12 or higher is installed.
 Open a terminal window and change directories to this project. `Skyline.py` is the main Skyline Problem script. Enter the following command:  
 `python .\Skyline.py`  
 
-Input files under the `InputBuildings` folder will be used to perform the stable matching.  
-Outputs for the inputs will be displayed in the console, and saved to the `Output` folder.
+Input files under the `InputBuildings` folder will be used to perform the skyline generation.  
+Outputs for the inputs will be displayed in the console, and saved to the `OutputSkyline` folder.
