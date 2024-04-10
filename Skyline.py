@@ -224,7 +224,7 @@ if __name__ == "__main__":
         file=open(path,'w')
         file.write(output[filenumber])
         file.close()                                # file is written and then closed
-        print(f'Output File for Building {filenumber+1} created Successfully')   #terminal produces successful message of output file being created
+        print(f'Output File for Skyline {filenumber+1} created Successfully:\n{output[filenumber]}')   #terminal produces successful message of output file being created
         
 
 
