@@ -73,7 +73,7 @@ class Skyline:
     #     If there is only 1 building in B
     #         Return building
     #     Else:
-    #         Divide buildings into left list L and right list R
+    #         Divide buildings/2 (into half) to left list L and right list R
     #         Left buildings = recursiveSkylineFunction(L)
     #         Right buildings = recursiveSkylineFunction(R)
     #
