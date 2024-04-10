@@ -57,6 +57,53 @@ class BuildingTuple:
 # Usage: stores static methods that are used to generate the skyline from a group of buildings
 #
 class Skyline:
+
+    # ALGORITHM PSEUDOCODE
+    #
+    # This is the pseudocode for the recursive Skyline Identifier algorithm. The implementation in Python can be found right below the pseudocode.
+    # See README.md for execution instructions and test data information.
+    # --------------------------------------------------
+    #
+    # recursiveSkylineFunction(List B of buildings)
+    #     If there is only 1 building in B
+    #         Return building
+    #     Else:
+    #         Divide buildings into left list L and right list R
+    #         Left buildings = recursiveSkylineFunction(L)
+    #         Right buildings = recursiveSkylineFunction(R)
+    #
+    #     Return mergeSkylineFunction(L, R)
+    #
+    #
+    # mergeSkylineFunction(Left building list L, Right building list R)
+    #     Initialize counters i, j = 0
+    #     Initialize registers prev_left_height, prev_right_height = 0
+    #     Initialize List skyline_list
+    #
+    #     While i and j haven't reached end of lists L and R respectively
+    #         If left building starts before right building (L[i].x-coordinate < R[j].x-coordinate)
+    #             Store current left building in prev_left_height
+    #             Find max height in this situation (L[i] height vs. prev_right_height) for edge cases
+    #             If last point in skyline_list has the same height
+    #                 Do not append (no height change)
+    #             Increment i
+    #         If right building starts before left building (R[i].x-coordinate < L[j].x-coordinate)
+    #             Store current right building in prev_right_height
+    #             Find max height in this situation (R[i] height vs. prev_left_height) for edge cases
+    #             If last point in skyline_list has the same height
+    #                 Do not append (no height change)
+    #             Increment j
+    #
+    #     If i didn't reach end of L (left building list)
+    #         Append remaining buildings from L to skyline_list
+    #     If j didn't reach end of R (right building list)
+    #         Append remaining buildings from R to skyline_list
+    #
+    #     Return skyline_list
+
+
+
+
     #
     # Function Name: recursive_function2  <STATIC>
     # Formal Parameters:
@@ -68,19 +115,19 @@ class Skyline:
     def recursive_function2(buildings:list)->list:
         if len(buildings) == 1:
             return [BuildingTuple(buildings[0].height, buildings[0].left_coordinate),
-                    BuildingTuple(0, buildings[0].right_coordinate)]        # if the list has only one element, then its information and another fake building sharing the same right coordinate but a       
-        mid = len(buildings) // 2                                           # 0 left coordinate are used. 
+                    BuildingTuple(0, buildings[0].right_coordinate)]        # if the list has only one element, then its information and another fake building sharing the same right coordinate but a
+        mid = len(buildings) // 2                                           # 0 left coordinate are used.
         left = Skyline.recursive_function2(buildings[:mid])                # method recursively called on the left and right side until the base case is found.
         right = Skyline.recursive_function2(buildings[mid:])
 
-        return Skyline.merge(left, right)                                    # method recursively used with the left and the right variables of the stored buildings 
+        return Skyline.merge(left, right)                                    # method recursively used with the left and the right variables of the stored buildings
     #
     # Function Name: merge  <STATIC>
     # Formal Parameters:
     #   1) [int] left: the left skyline passed into the function to compare with the right coordinate
     #   2) [int]  right: the right skyline passed into the function to compare with the left coordinate
     # Return Value:list
-    # Usage: called to compare two buildings and find the change of elevation and collection points to form a skyline of the buildings 
+    # Usage: called to compare two buildings and find the change of elevation and collection points to form a skyline of the buildings
     #
     @staticmethod
     def merge(left:int, right:int)->list:
@@ -197,7 +244,7 @@ def getInputBuildingFiles() -> list:  # pathing in VScode is odd, so this is add
 
     dirPath = os.path.join(path, 'InputBuildings')
     return [os.path.join(dirPath, file) for file in os.listdir(dirPath) if os.path.isfile(os.path.join(dirPath, file))]
-    
+
 if __name__ == "__main__":
     output=[]
     for fullFilePath in getInputBuildingFiles():
@@ -216,7 +263,7 @@ if __name__ == "__main__":
         skyline = Skyline()
         results = skyline.recursive_function2(buildings)
         for result in results:
-            converted+=str(result)[1:-1]+'\n' 
+            converted+=str(result)[1:-1]+'\n'
         output.append(converted)
     paths=getInputBuildingFiles()
     for filenumber in range(len(output)):   #used to create the output files
@@ -225,7 +272,7 @@ if __name__ == "__main__":
         file.write(output[filenumber])
         file.close()                                # file is written and then closed
         print(f'Output File for Skyline {filenumber+1} created Successfully:\n{output[filenumber]}')   #terminal produces successful message of output file being created
-        
 
 
-    
+
+
